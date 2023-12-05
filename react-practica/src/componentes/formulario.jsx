@@ -10,11 +10,17 @@ const formulario = ({pacientes, setPacientes}) => {
   const [hora, setHora] = useState('');
   const [sintomas, setSintomas] = useState('');
   const[error, setError] = useState(false);
+  const generarId = () => {
+    const math= Math.random().toString(36).substring(2,9);
+    const fecha = new Date().getTime().toString(36);
+    return math + fecha;
+
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     //Validar
     if([nombre, apellido, cedula, telefono, email, fecha, hora, sintomas].includes('')){
-      console.log('Hay campos vacios');
+     // console.log('Hay campos vacios');
      setError(true);
      return;
     }
@@ -28,7 +34,8 @@ const formulario = ({pacientes, setPacientes}) => {
       email,
       fecha,
       hora,
-      sintomas
+      sintomas,
+      id: generarId()
     }
     setPacientes([...pacientes, paciente]);
     //Reiniciar el formulario
@@ -42,6 +49,7 @@ const formulario = ({pacientes, setPacientes}) => {
     setSintomas('');
     
   }
+  pacientes.length > 0 && console.log(pacientes);
   return (
     
     <div className='md:w-1/2 lg:w-2/5'>
@@ -52,8 +60,8 @@ const formulario = ({pacientes, setPacientes}) => {
         </p>
       <form
        onSubmit={handleSubmit} 
-        className='m-16 shadow-md bg-white rounded-lg py-10 px-5'>
-          {error && <Error mensaje='Todos los campos son obligatorios'/>}
+        className='m-2 shadow-md bg-white rounded-lg py-10 px-5'>
+          {error && <Error><p className='text-center'>Todos los campos son obligatorios</p></Error>}
         <div className="mb-3">
           <label htmlFor="nombre" className="block text-gray-900 text-sm font-bold mb-2 ">Nombre: {nombre}</label>
           <input 
