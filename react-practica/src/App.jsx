@@ -6,6 +6,7 @@ import Formulario from './componentes/formulario';
 
 function App() {
   const [pacientes, setPacientes] = useState([]);
+  const [paciente, setPaciente] = useState({});//este es el paciente que vamos a editar
   return (
     
     <div className="container mx-auto mt-20">
@@ -14,8 +15,11 @@ function App() {
          <Formulario 
            pacientes={pacientes}
            setPacientes={setPacientes}
+           paciente={paciente}
          />
-          <Listapacientes pacientes={pacientes}/>
+          <Listapacientes pacientes={pacientes}
+          setPaciente={setPaciente}
+          />
           
       </div>
     </div>

@@ -1,7 +1,14 @@
 import Paciente from './paciente';
-function listaPacientes({pacientes}) {
+import {useEffect} from 'react'
+
+const listaPacientes = ({pacientes, setPaciente})=> {
+  useEffect(()=>{if(pacientes.length>0){
+    console.log('nuevo paciente')
+  }},[pacientes])
   return (
+    //este es el componente reaccionara cuando ayamos agregado un paciente
     <div className='md:w-1/2 lg:w-3/5 h-screen overflow-y-scroll'>
+      
       {pacientes && pacientes.length ? (
         <>
           <h2 className='text-3xl uppercase text-indigo-300 mt-5 font-bold text-center '>Lista de Pacientes</h2>
@@ -13,12 +20,16 @@ function listaPacientes({pacientes}) {
           {pacientes.map( paciente =>( 
               <Paciente 
                 key={paciente.id}
-              paciente = {paciente}
+               paciente = {paciente}
+                setPaciente={setPaciente}
               />
             ))}
         </>
-      ): (
+      ): 
+      //este es el componente reaccionara cuando no ayamos agregado un paciente
+      (
         <>
+      
             <h2 className='text-3xl uppercase text-indigo-300 mt-5 font-bold text-center '>No hay Lista de Pacientes</h2>
             <p className='text-xl text-center'>
               Aqui veras la lista de

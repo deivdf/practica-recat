@@ -1,6 +1,6 @@
 import Error from './error';
 import {useState, useEffect} from 'react';
-const formulario = ({pacientes, setPacientes}) => {
+const formulario = ({pacientes, setPacientes, paciente}) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [cedula, setCedula] = useState('');
@@ -10,6 +10,11 @@ const formulario = ({pacientes, setPacientes}) => {
   const [hora, setHora] = useState('');
   const [sintomas, setSintomas] = useState('');
   const[error, setError] = useState(false);
+
+  useEffect(()=>{console.log(paciente)},[paciente])
+
+ 
+
   const generarId = () => {
     const math= Math.random().toString(36).substring(2,9);
     const fecha = new Date().getTime().toString(36);
@@ -20,7 +25,6 @@ const formulario = ({pacientes, setPacientes}) => {
     e.preventDefault();
     //Validar
     if([nombre, apellido, cedula, telefono, email, fecha, hora, sintomas].includes('')){
-     // console.log('Hay campos vacios');
      setError(true);
      return;
     }
@@ -143,11 +147,12 @@ const formulario = ({pacientes, setPacientes}) => {
           <label htmlFor="sintomas" className="block text-gray-900 text-sm font-bold mb-2 ">Sintomas:</label>
           <textarea 
           id='sintomas' 
+          type="text"
           placeholder='Sintomas del paciente'
           className="border-2 placeholder-gray-400 p-2 mt-2 rounded-md shadow-md w-full" 
           value={sintomas}
           onChange={(e) => setSintomas(e.target.value)}
-          ></textarea>
+          />
         </div>
         <div>
           <input type="submit" value="Agregar Paciente" className='bg-indigo-300 hover:bg-indigo-400 w-full p-2 text-white uppercase font-bold  cursor-pointer' />
