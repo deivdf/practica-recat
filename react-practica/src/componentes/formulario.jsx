@@ -1,6 +1,7 @@
 import Error from './error';
 import {useState, useEffect} from 'react';
-const formulario = ({pacientes, setPacientes, paciente}) => {
+// tomar los datos del formulario y agregarlos al state de pacientes guardados en variables const y useState
+const formulario = ({pacientes, setPacientes, paciente, setPaciente}) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [cedula, setCedula] = useState('');
@@ -10,27 +11,44 @@ const formulario = ({pacientes, setPacientes, paciente}) => {
   const [hora, setHora] = useState('');
   const [sintomas, setSintomas] = useState('');
   const[error, setError] = useState(false);
-
-  useEffect(()=>{console.log(paciente)},[paciente])
+/*comprueba si hay un paciente o no y si hay un paciente y 
+presionamos el boton editar se traen los valores que tiene el objeto en cuiestion*/
+  useEffect(()=>{
+    if(Object.keys(paciente).length > 0){
+      setNombre(paciente.nombre);
+      setApellido(paciente.apellido);
+      setCedula(paciente.cedula);
+      setTelefono(paciente.telefono);
+      setEmail(paciente.email);
+      setFecha(paciente.fecha);
+      setHora(paciente.hora);
+      setSintomas(paciente.sintomas);
+    }
+ 
+  
+  },[paciente])
 
  
-
+  // Generar un id unico para cada paciente
   const generarId = () => {
     const math= Math.random().toString(36).substring(2,9);
     const fecha = new Date().getTime().toString(36);
     return math + fecha;
 
   }
+  //Cuando el usuario envia el formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    //Validar
+    //Validar el formulario que no este vacio en los campos
     if([nombre, apellido, cedula, telefono, email, fecha, hora, sintomas].includes('')){
+      //Mostrar el error
      setError(true);
      return;
     }
+    //Eliminar el mensaje de error
     setError(false);
-    //Enviar
-    const paciente = {
+    //Enviar el formulario al componente principal
+    const Objetopaciente = {
       nombre,
       apellido,
       cedula,
@@ -39,9 +57,20 @@ const formulario = ({pacientes, setPacientes, paciente}) => {
       fecha,
       hora,
       sintomas,
-      id: generarId()
     }
-    setPacientes([...pacientes, paciente]);
+    if(paciente.id){
+      Objetopaciente.id = paciente.id;
+      //editar el paciente existente
+      const PacienteEditado = pacientes.map(pacienteState => pacienteState.id === paciente.id ? Objetopaciente : pacienteState);
+      setPacientes(PacienteEditado);
+      setPaciente({});
+    }else{
+      Objetopaciente.id = generarId();
+      //Agregar el paciente al state
+      setPacientes([...pacientes, Objetopaciente]);
+    }
+    
+
     //Reiniciar el formulario
     setNombre('');
     setApellido('');
@@ -53,6 +82,7 @@ const formulario = ({pacientes, setPacientes, paciente}) => {
     setSintomas('');
     
   }
+  // Revisar si hay pacientes
   pacientes.length > 0 && console.log(pacientes);
   return (
     
@@ -65,6 +95,7 @@ const formulario = ({pacientes, setPacientes, paciente}) => {
       <form
        onSubmit={handleSubmit} 
         className='m-2 shadow-md bg-white rounded-lg py-10 px-5'>
+        {/*si hay un error muestra el mensaje de error  y si no hay no muestra nada manda el mensaje atraves de un children*/}
           {error && <Error><p className='text-center'>Todos los campos son obligatorios</p></Error>}
         <div className="mb-3">
           <label htmlFor="nombre" className="block text-gray-900 text-sm font-bold mb-2 ">Nombre: {nombre}</label>
@@ -154,8 +185,13 @@ const formulario = ({pacientes, setPacientes, paciente}) => {
           onChange={(e) => setSintomas(e.target.value)}
           />
         </div>
+        {/*si hay un paciente y presionamos el boton editar se cambia el texto del boton a editar paciente y si no hay un paciente y presionamos el boton agregar se cambia el texto del boton a agregar paciente*/}
         <div>
-          <input type="submit" value="Agregar Paciente" className='bg-indigo-300 hover:bg-indigo-400 w-full p-2 text-white uppercase font-bold  cursor-pointer' />
+          <input type="submit" 
+          value={Object.keys(paciente).length > 0 ? 'Editar Paciente' : 'Agregar Paciente' }
+          className='bg-indigo-300 hover:bg-indigo-400 w-full p-2 text-white uppercase font-bold  cursor-pointer'
+          
+          />
         </div>
       </form>
     </div>

@@ -1,6 +1,14 @@
 import Formulario from './formulario'
-const Paciente = ({paciente, setPaciente}) => {
-  const {nombre, apellido, cedula, telefono, email, fecha, hora, sintomas} = paciente
+const Paciente = ({paciente, setPaciente, eliminarPaciente }) => {
+  // recibe los datos del paciente mandados desde el componente listaPacientes
+  const {nombre, apellido, cedula, telefono, email, fecha, hora, sintomas, id} = paciente
+  const handleEliminar = ()=>{
+    const respuesta = confirm('¿Desea eliminar el paciente?')
+    if(respuesta){
+      eliminarPaciente(id)
+    }
+  }
+  // muestra los datos del paciente en el componente paciente
   return (
     <div className='m-16 shadow-md bg-white rounded-lg py-10 px-5'>
         <h2 className="text-xl font-bold text-center ">Datos personales del Paciente</h2>
@@ -26,6 +34,7 @@ const Paciente = ({paciente, setPaciente}) => {
       </button>
       <button
         className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 uppercase mt-10 rounded-lg ml-2'
+        onClick={handleEliminar}
       >
         Eliminar
       </button>

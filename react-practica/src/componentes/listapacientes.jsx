@@ -1,7 +1,8 @@
 import Paciente from './paciente';
 import {useEffect} from 'react'
 
-const listaPacientes = ({pacientes, setPaciente})=> {
+const listaPacientes = ({pacientes, setPaciente, eliminarPaciente})=> {
+  //comprueba si hay un paciente o no
   useEffect(()=>{if(pacientes.length>0){
     console.log('nuevo paciente')
   }},[pacientes])
@@ -22,6 +23,7 @@ const listaPacientes = ({pacientes, setPaciente})=> {
                 key={paciente.id}
                paciente = {paciente}
                 setPaciente={setPaciente}
+                eliminarPaciente={eliminarPaciente}
               />
             ))}
         </>

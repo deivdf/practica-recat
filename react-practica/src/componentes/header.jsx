@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import Formulario from './formulario.jsx';
 
 export default class header extends Component {
+  //header es un componente de clase
   render() {
     return (
       <div className='text-center'>
